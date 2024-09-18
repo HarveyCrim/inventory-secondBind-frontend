@@ -13,7 +13,10 @@ export const getUserFromDb = () => {
                 url : backend_url+"/api/user/create"
             })
             return resp.data
-        }
+        },
+        onSuccess(data) {
+            localStorage.setItem("token", JSON.stringify(data.token))
+        },
     })
     return {userData, findingUser, findUser}
 }

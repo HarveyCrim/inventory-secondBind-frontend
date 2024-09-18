@@ -32,3 +32,5 @@ export const addEntrySchema = zod.object({
         return val
     })
 })
+
+export type bookField = zod.infer<typeof addEntrySchema>
