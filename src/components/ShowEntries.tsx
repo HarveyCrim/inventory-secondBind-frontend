@@ -15,7 +15,7 @@ const ShowEntries = () => {
     await fetchMyBooks(pageRef.current)
   }
   const nextButton = () => {
-    if(12 * pageRef.current >= bookCount){
+    if(12 * pageRef.current + 12 >= bookCount){
         return
     }
     pageRef.current++

@@ -22,7 +22,6 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
   const filterOn = useSelector<IRootState, boolean>(state => state.userReducer.filter)
   const {filteredBooksCount, getfilterBooksCount, gettingfilterBooksCount} = filterBooksCountApi()
   const pageRef = useRef<number>(0)
-  
   const atStart = async () => {
     await getfilterBooksCount({info: query!})
     await filterBooks({info:query!, page:pageRef.current})
@@ -66,7 +65,7 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
   }
 
   const nextButton = () => {
-    if(13 * pageRef.current >= filteredBooksCount){
+    if(13 * pageRef.current + 13 >= filteredBooksCount){
         return
     }
     pageRef.current++

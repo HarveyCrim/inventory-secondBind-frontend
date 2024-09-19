@@ -80,7 +80,6 @@ export const getAllGenresApi = () => {
 export const filterBooksApi = () => {
     const {mutateAsync: filterBooks, isPending: filteringBooks, data: filteredBooks} = useMutation({
         mutationFn: async ({info, page}: {info: filterType, page: number}) => {
-            console.log(info)
             const resp = await axios({
                 method: "post",
                 url: backend_url+"/api/books/getfilteredbooks?page="+page,
@@ -105,7 +104,6 @@ export const filterBooksApi = () => {
 export const filterBooksCountApi = () => {
     const {mutateAsync: getfilterBooksCount, isPending: gettingfilterBooksCount, data: filteredBooksCount} = useMutation({
         mutationFn: async ({info}: {info: filterType}) => {
-            console.log(info)
             const resp = await axios({
                 method: "post",
                 url: backend_url+"/api/books/filteredbookscount",
@@ -130,7 +128,7 @@ export const filterBooksCountApi = () => {
 export const dataForCsv = async ({info}: {info: filterType}) => {
     const resp = await axios({
         method: "post",
-        url: backend_url+"/api/books/getfilteredbooks",
+        url: backend_url+"/api/books/getfilteredbooks?page=-1",
         data: {
             title: info.title,
             author: info.author,
