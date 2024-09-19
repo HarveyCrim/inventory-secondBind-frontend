@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { filterBooksApi, filterBooksCountApi } from '../api/bookApi'
+import { useEffect, useRef, useState } from 'react'
+import {  filterBooksApi, filterBooksCountApi } from '../api/bookApi'
 import { bookField, filterField } from '../zod/schemas'
 import { SpinnerCircular } from 'spinners-react'
 import InventoryCard from './InventoryCard'
@@ -10,18 +10,29 @@ import { setFilter } from '../redux/userSlice'
 import { IRootState } from '../redux/store'
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link } from 'react-router-dom'
+// import {CSVDownload}  from "react-csv"
+
 type inventoryField = Omit<bookField, "date"> & {userId: number, date: Date, entryId: number}
 const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| undefined}) => {
   const {filterBooks, filteredBooks, filteringBooks} = filterBooksApi()
+  const [csvData, setCSVData] = useState(null)
   const dispatch = useDispatch()
   const filterOn = useSelector<IRootState, boolean>(state => state.userReducer.filter)
   const {filteredBooksCount, getfilterBooksCount, gettingfilterBooksCount} = filterBooksCountApi()
   const pageRef = useRef<number>(0)
-  console.log(filteredBooks)
+  
 
   const atStart = async () => {
     await getfilterBooksCount({info: query!})
     await filterBooks({info:query!, page:pageRef.current})
+  }
+
+  const findCSVData = async () => {
+    if(!query){
+        return
+    }
+//    const data =  await dataForCsv({info:query!})
+//    setCSVData(data)
   }
 
   const prevButton = () => {
@@ -45,16 +56,23 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
         atStart()
   }, [query])
   if(filteringBooks || gettingfilterBooksCount){
-    return (<div className={`bg-white border-4 flex w-full h-[88.2vh] justify-center items-center border`}><SpinnerCircular color='#ffffff'/></div>)
+    return (<div className={`bg-white border-4 flex w-full h-[92.2vh] justify-center items-center border`}><SpinnerCircular color='#ffffff'/></div>)
   }
   return (
-    <div className={`w-[100%] min-h-[88.2vh] border bg-white border`}>
-        <div className={`flex items-center ${!filterOn ? "z-20" : "z-0"} justify-between bg-white px-3 sticky top-[68px] py-1 border`}>
-            <Link to = "/"><div className='flex gap-1 items-center'><IoMdArrowRoundBack size = {20}/><span>Back</span></div></Link>
+    <div className={`w-[100%] min-h-[88.2vh] md:min-h-[92.2vh] border bg-white border`}>
+        <div className={`flex items-center ${!filterOn ? "z-20" : "z-0"} justify-between bg-white px-3 sticky top-[68px] md:top-[70px] py-1 border`}>
+            <Link className="md:hidden" to = "/"><div className='flex gap-1 items-center'><IoMdArrowRoundBack size = {20}/><span className=''>Back</span></div></Link>
             <div onClick = {() => dispatch(setFilter(true))} className={`md:hidden bg-gray-400 border-black text-black shadow-lg flex items-center p-2 gap-1 rounded-xl w-fit`}><span>Filters</span><FaFilter /></div>
         </div>
         {filteredBooks && filteredBooks.length > 0 && <div className='flex flex-col items-center py-3'>
-            <p className="text-center font-bold text-sm md:text-md py-1">{`Showing ${(pageRef.current * 13) + 1} - ${(pageRef.current * 13) + 13 <= filteredBooksCount ? (pageRef.current * 13) + 13 : filteredBooksCount} of ${filteredBooksCount} results.`}</p>
+            <div>
+                <p className="text-center font-bold text-sm md:text-md py-1">{`Showing ${(pageRef.current * 13) + 1} - ${(pageRef.current * 13) + 13 <= filteredBooksCount ? (pageRef.current * 13) + 13 : filteredBooksCount} of ${filteredBooksCount} results.`}</p>
+                {csvData == null && <button onClick={() => findCSVData()}>Export CSV</button>}
+                {/* {csvData != null && <CSVDownload
+                data={csvData}
+                target="_blank"
+                />} */}
+            </div>
             {
                 filteredBooks?.map((item: inventoryField) => {
                     return <InventoryCard key = {item.entryId} entryId = {item.entryId} title = {item.title} userId={item.userId} author={item.author} date={item.date} genre={item.genre} isbn={item.isbn}/>

@@ -7,6 +7,8 @@ import { IoIosSearch } from "react-icons/io"
 import { useDispatch} from "react-redux"
 import { IoMdCloseCircle } from "react-icons/io";
 import { setFilter } from "../redux/userSlice"
+import { IoArrowBackCircle } from "react-icons/io5";
+import { Link } from "react-router-dom"
 type filterWithGenre = filterField & {genres: String[]}
 const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: string[], filterFunc: React.Dispatch<React.SetStateAction<filterWithGenre | undefined>>}) => {
   const [selectedGenres, setSelectedGenres] = useState<String[]>([])
@@ -21,6 +23,7 @@ const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: string[], fi
   return (
     <div className={`bg-white p-7 md:sticky fixed top-[50px] md:top-[83px] space-y-4 mt-2 md:w-[700px] h-[100%] w-[100%]`}>
         <div className="flex justify-between items-center">
+            <Link className="hidden md:inline"to = "/"><div className="hidden md:flex items-center"><IoArrowBackCircle size={35}/><span className="text-lg">Back</span></div></Link>
             <span className=" py-1 px-2 text-2xl font-medium text-white bg-gray-500">Filters</span>
             <IoMdCloseCircle onClick = {() => dispatch(setFilter(false))} size = {35} className="md:hidden"/>
         </div>

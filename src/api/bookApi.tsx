@@ -128,3 +128,23 @@ export const filterBooksCountApi = () => {
     })
     return {getfilterBooksCount, gettingfilterBooksCount, filteredBooksCount}
 }
+
+export const dataForCsv = async ({info}: {info: filterType}) => {
+    console.log(info)
+    const resp = await axios({
+        method: "post",
+        url: backend_url+"/api/books/getfilteredbooks",
+        data: {
+            title: info.title,
+            author: info.author,
+            genres: info.genres,
+            afterDate: info.published_after,
+            beforeDate: info.published_before,
+            isbn: info.isbn
+        },
+        headers: {
+            Authorization : JSON.parse(localStorage.getItem("token") as string)
+        }
+    })
+    return resp.data
+}
