@@ -45,12 +45,12 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
         atStart()
   }, [query])
   if(filteringBooks || gettingfilterBooksCount){
-    return (<div className={`bg-white border-4 flex w-full h-[92.2vh] justify-center items-center border`}><SpinnerCircular color='#ffffff'/></div>)
+    return (<div className={`bg-white border-4 flex w-full h-[88.2vh] justify-center items-center border`}><SpinnerCircular color='#ffffff'/></div>)
   }
   return (
-    <div className={`w-[100%] min-h-[92.2vh] border bg-white border`}>
+    <div className={`w-[100%] min-h-[88.2vh] border bg-white border`}>
         <div className={`flex items-center ${!filterOn ? "z-20" : "z-0"} justify-between bg-white px-3 sticky top-[68px] py-1 border`}>
-            <Link to = {"/"}><IoMdArrowRoundBack size = {30}/></Link>
+            <Link to = "/"><div className='flex gap-1 items-center'><IoMdArrowRoundBack size = {20}/><span>Back</span></div></Link>
             <div onClick = {() => dispatch(setFilter(true))} className={`md:hidden bg-gray-400 border-black text-black shadow-lg flex items-center p-2 gap-1 rounded-xl w-fit`}><span>Filters</span><FaFilter /></div>
         </div>
         {filteredBooks && filteredBooks.length > 0 && <div className='flex flex-col items-center py-3'>
