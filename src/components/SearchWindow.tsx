@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 import papa from "papaparse"
 
 
-type inventoryField = Omit<bookField, "date"> & {userId: number, date: Date, entryId: number}
+type inventoryField = Omit<bookField, "date"> & {userId: number, publication_date: Date, entryId: number}
 const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| undefined}) => {
   const {filterBooks, filteredBooks, filteringBooks} = filterBooksApi()
   const [csvData, setCSVData] = useState<any>(null)
@@ -27,7 +27,6 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
     await filterBooks({info:query!, page:pageRef.current})
     setCSVData(null)
   }
-
   const downloadCSV = () => {
     if(!query){
         return
@@ -88,7 +87,7 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
             <div onClick = {() => dispatch(setFilter(true))} className={`md:hidden bg-gray-400 border-black text-black shadow-lg flex items-center p-2 gap-1 rounded-xl w-fit`}><span>Filters</span><FaFilter /></div>
         </div>
         {filteredBooks && filteredBooks.length > 0 && <div className='flex flex-col items-center py-3'>
-            <div className='flex justify-between border w-full px-9 py-1 items-center'>
+            <div className='flex justify-between border px-5 w-full md:px-9 py-1 items-center'>
                 <p className="text-center font-bold text-xs md:text-md py-1">{`Showing ${(pageRef.current * 13) + 1} - ${(pageRef.current * 13) + 13 <= filteredBooksCount ? (pageRef.current * 13) + 13 : filteredBooksCount} of ${filteredBooksCount} results.`}</p>
                 {csvData == null && csvLoading == 0 && <button className="bg-black text-white h-[30px] md:h-[50px] w-[100px] text-sm md:w-[200px]"onClick={() => findCSVData()}>Export CSV</button>}
                 {csvLoading == 1 && <button className="bg-black text-white h-[30px] md:h-[50px] w-[100px] text-sm md:w-[200px]"><div className='w-full flex justify-center items-center'><SpinnerCircular size={30} color='#ffffff'/></div></button>}
@@ -96,7 +95,7 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
             </div>
             {
                 filteredBooks?.map((item: inventoryField) => {
-                    return <InventoryCard key = {item.entryId} entryId = {item.entryId} title = {item.title} userId={item.userId} author={item.author} date={item.date} genre={item.genre} isbn={item.isbn}/>
+                    return <InventoryCard key = {item.entryId} entryId = {item.entryId} title = {item.title} userId={item.userId} author={item.author} date={item.publication_date} genre={item.genre} isbn={item.isbn}/>
                 })
             }
             <div className="flex mt-2 justify-center gap-4">

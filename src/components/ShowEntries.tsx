@@ -5,7 +5,7 @@ import { bookField } from "../zod/schemas"
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import InventoryCard from "./InventoryCard"
-type inventoryField = Omit<bookField, "date"> & {userId: number, date: Date, entryId: number}
+type inventoryField = Omit<bookField, "date"> & {userId: number, publication_date: Date, entryId: number}
 const ShowEntries = () => {
   const pageRef = useRef<number>(0)
   const {fetchMyBooks, fetchedMyBooks, fetchingMyBooks} = getMyBooksApi()
@@ -42,7 +42,7 @@ const ShowEntries = () => {
         <div className="flex flex-col items-center ">
             {
                 fetchedMyBooks?.map((item:inventoryField) => {
-                    return <InventoryCard key = {item.entryId} entryId = {item.entryId} title = {item.title} userId={item.userId} author={item.author} date={item.date} genre={item.genre} isbn={item.isbn}/>
+                    return <InventoryCard key = {item.entryId} entryId = {item.entryId} title = {item.title} userId={item.userId} author={item.author} date={item.publication_date} genre={item.genre} isbn={item.isbn}/>
                 })
             }
         </div>

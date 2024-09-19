@@ -1,5 +1,4 @@
 import { useState } from "react"
-import GenreFilter from "./GenreFilter"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { filterField, filterSchema } from "../zod/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,17 +8,23 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { setFilter } from "../redux/userSlice"
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link } from "react-router-dom"
+import { MultiSelect, Option} from "react-multi-select-component";
 type filterWithGenre = filterField & {genres: String[]}
-const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: string[], filterFunc: React.Dispatch<React.SetStateAction<filterWithGenre | undefined>>}) => {
-  const [selectedGenres, setSelectedGenres] = useState<String[]>([])
+const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: Option[], filterFunc: React.Dispatch<React.SetStateAction<filterWithGenre | undefined>>}) => {
+  const [selectedGenres, setSelectedGenres] = useState<Option[]>([])
   const dispatch = useDispatch()
   const {register, handleSubmit, formState: {errors}} = useForm<filterField>({
     resolver: zodResolver(filterSchema)
   })
+  console.log(loadedGenres)
+  console.log(selectedGenres, "ggg")
   const onSubmit:SubmitHandler<filterField> = (data: filterField) => {
-    filterFunc({...data, genres: selectedGenres})
+    let genreValues: String[] = []
+    selectedGenres.forEach(item => genreValues.push(item.value))
+    filterFunc({...data, genres: genreValues})
     dispatch(setFilter(false))
   }
+
   return (
     <div className={`bg-white p-7 md:sticky fixed top-[50px] md:top-[83px] space-y-4 mt-2 md:w-[700px] h-[100%] w-[100%]`}>
         <div className="flex justify-between items-center">
@@ -38,13 +43,12 @@ const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: string[], fi
             </div>
             <div className="space-y-1">
                 <label className="font-bold md:text-xl text-md">Genres</label>
-                <div className="flex flex-wrap gap-x-7 gap-y-2 px-1">
-                    {
-                        loadedGenres?.map((item : string) => {
-                            return <GenreFilter name = {item} genres={selectedGenres} addFunc={setSelectedGenres}/>
-                        })  
-                    }
-                </div>
+                {loadedGenres && <MultiSelect className="md:w-[400px]"
+                    options={loadedGenres}
+                    value={selectedGenres}
+                    onChange={setSelectedGenres}
+                    labelledBy="Select"
+                />}
             </div>
             <div className="flex md:flex-row flex-col md:gap-7 gap-3">
                 <div className="flex flex-col gap-1 w-[100%]">
