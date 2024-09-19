@@ -2,7 +2,6 @@ import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { filterField, filterSchema } from "../zod/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { IoIosSearch } from "react-icons/io"
 import { useDispatch} from "react-redux"
 import { IoMdCloseCircle } from "react-icons/io";
 import { setFilter } from "../redux/userSlice"
