@@ -42,7 +42,7 @@ const ShowEntries = () => {
         <div className="flex flex-col items-center ">
             {
                 fetchedMyBooks?.map((item:inventoryField) => {
-                    return <InventoryCard entryId = {item.entryId} title = {item.title} userId={item.userId} author={item.author} date={item.date} genre={item.genre} isbn={item.isbn}/>
+                    return <InventoryCard key = {item.entryId} entryId = {item.entryId} title = {item.title} userId={item.userId} author={item.author} date={item.date} genre={item.genre} isbn={item.isbn}/>
                 })
             }
         </div>

@@ -1,20 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 type initialStateType = {
-    id : number | null
+    filter: boolean
 }
 
 const initialState : initialStateType = {
-    id : null
+    filter: true
 }
 const userSlice = createSlice({
     name : "userReducer",
     initialState, 
     reducers : {
-        setId : (state, action) => {
-            state.id = action.payload
+        setFilter: (state, action) => {
+            state.filter = action.payload
         }
     }
 })
 
 export default userSlice.reducer
-export const {setId} = userSlice.actions
+export const {setFilter} = userSlice.actions
