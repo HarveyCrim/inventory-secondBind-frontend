@@ -68,7 +68,7 @@ const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: Option[], fi
                     <input {...register("isbn")} className= "outline-none border border-black p-1" placeholder= "Enter digits in ISBN" type = "text" />
                     {errors.isbn && <span className="text-red-500">{errors.isbn.message}</span>}
                 </div>
-                <button className="hidden md:inline rounded-lg border" type = "submit"><div className="flex items-center bg-black text-white md:text-lg text-md py-2 px-7 gap-1 rounded-lg"><IoIosSearch /><span className="font-medium">Search</span></div></button>
+                <button className="hidden md:inline rounded-lg border" type = "submit"><div className="flex items-center bg-black text-white md:text-lg text-md py-2 px-7 gap-1 justify-center rounded-lg"><span className="font-medium">Search</span></div></button>
                 <button className="md:hidden rounded-lg border" type = "submit"><div className="flex items-center justify-center bg-black text-white md:text-lg text-md py-2 px-7 gap-1 rounded-lg"><span className="font-medium">Search</span></div></button>
         </form>
     </div>
