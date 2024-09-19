@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import {  filterBooksApi, filterBooksCountApi } from '../api/bookApi'
+import {  dataForCsv, filterBooksApi, filterBooksCountApi } from '../api/bookApi'
 import { bookField, filterField } from '../zod/schemas'
 import { SpinnerCircular } from 'spinners-react'
 import InventoryCard from './InventoryCard'
@@ -10,29 +10,52 @@ import { setFilter } from '../redux/userSlice'
 import { IRootState } from '../redux/store'
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link } from 'react-router-dom'
-// import {CSVDownload}  from "react-csv"
+import papa from "papaparse"
+
 
 type inventoryField = Omit<bookField, "date"> & {userId: number, date: Date, entryId: number}
 const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| undefined}) => {
   const {filterBooks, filteredBooks, filteringBooks} = filterBooksApi()
-  const [csvData, setCSVData] = useState(null)
+  const [csvData, setCSVData] = useState<any>(null)
+  const [csvLoading, setCSVLoading] = useState<number>(0)
   const dispatch = useDispatch()
   const filterOn = useSelector<IRootState, boolean>(state => state.userReducer.filter)
   const {filteredBooksCount, getfilterBooksCount, gettingfilterBooksCount} = filterBooksCountApi()
   const pageRef = useRef<number>(0)
   
-
   const atStart = async () => {
     await getfilterBooksCount({info: query!})
     await filterBooks({info:query!, page:pageRef.current})
+    setCSVData(null)
+  }
+
+  const downloadCSV = () => {
+    if(!query){
+        return
+    }
+    const csv = papa.unparse(csvData!);
+
+    const csvBlob = new Blob([csv], { type: "text/csv" });
+
+    const csvUrl = URL.createObjectURL(csvBlob);
+
+    const link = document.createElement("a");
+    link.href = csvUrl;
+    link.download = "inventory_data.csv";
+
+    link.click();
+
+    URL.revokeObjectURL(csvUrl);
   }
 
   const findCSVData = async () => {
     if(!query){
         return
     }
-//    const data =  await dataForCsv({info:query!})
-//    setCSVData(data)
+   setCSVLoading(1)
+   const data =  await dataForCsv({info:query!})
+   setCSVData(data)
+   setCSVLoading(0)
   }
 
   const prevButton = () => {
@@ -55,6 +78,7 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
     if(query)
         atStart()
   }, [query])
+
   if(filteringBooks || gettingfilterBooksCount){
     return (<div className={`bg-white border-4 flex w-full h-[92.2vh] justify-center items-center border`}><SpinnerCircular color='#ffffff'/></div>)
   }
@@ -65,13 +89,11 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
             <div onClick = {() => dispatch(setFilter(true))} className={`md:hidden bg-gray-400 border-black text-black shadow-lg flex items-center p-2 gap-1 rounded-xl w-fit`}><span>Filters</span><FaFilter /></div>
         </div>
         {filteredBooks && filteredBooks.length > 0 && <div className='flex flex-col items-center py-3'>
-            <div>
-                <p className="text-center font-bold text-sm md:text-md py-1">{`Showing ${(pageRef.current * 13) + 1} - ${(pageRef.current * 13) + 13 <= filteredBooksCount ? (pageRef.current * 13) + 13 : filteredBooksCount} of ${filteredBooksCount} results.`}</p>
-                {csvData == null && <button onClick={() => findCSVData()}>Export CSV</button>}
-                {/* {csvData != null && <CSVDownload
-                data={csvData}
-                target="_blank"
-                />} */}
+            <div className='flex justify-between border w-full px-9 py-1 items-center'>
+                <p className="text-center font-bold text-xs md:text-md py-1">{`Showing ${(pageRef.current * 13) + 1} - ${(pageRef.current * 13) + 13 <= filteredBooksCount ? (pageRef.current * 13) + 13 : filteredBooksCount} of ${filteredBooksCount} results.`}</p>
+                {csvData == null && csvLoading == 0 && <button className="bg-black text-white h-[30px] md:h-[50px] w-[100px] text-sm md:w-[200px]"onClick={() => findCSVData()}>Export CSV</button>}
+                {csvLoading == 1 && <button className="bg-black text-white h-[30px] md:h-[50px] w-[100px] text-sm md:w-[200px]"><div className='w-full flex justify-center items-center'><SpinnerCircular size={30} color='#ffffff'/></div></button>}
+                {csvData != null && <button className="bg-black text-white h-[30px] md:h-[50px] w-[100px] text-sm md:w-[200px]" onClick={downloadCSV}>Download CSV</button>}
             </div>
             {
                 filteredBooks?.map((item: inventoryField) => {

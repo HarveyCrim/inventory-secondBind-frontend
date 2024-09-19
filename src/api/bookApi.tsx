@@ -97,7 +97,6 @@ export const filterBooksApi = () => {
                 }
             })
             return resp.data
-            // console.log(info)
         }
     })
     return {filterBooks, filteringBooks, filteredBooks}
@@ -123,14 +122,12 @@ export const filterBooksCountApi = () => {
                 }
             })
             return resp.data
-            // console.log(info)
         }
     })
     return {getfilterBooksCount, gettingfilterBooksCount, filteredBooksCount}
 }
 
 export const dataForCsv = async ({info}: {info: filterType}) => {
-    console.log(info)
     const resp = await axios({
         method: "post",
         url: backend_url+"/api/books/getfilteredbooks",
