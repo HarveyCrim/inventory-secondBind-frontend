@@ -4,15 +4,13 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { filterField, filterSchema } from "../zod/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { IoIosSearch } from "react-icons/io"
-import { useDispatch, useSelector } from "react-redux"
-import { IRootState } from "../redux/store"
+import { useDispatch} from "react-redux"
 import { IoMdCloseCircle } from "react-icons/io";
 import { setFilter } from "../redux/userSlice"
 type filterWithGenre = filterField & {genres: String[]}
 const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: string[], filterFunc: React.Dispatch<React.SetStateAction<filterWithGenre | undefined>>}) => {
   const [selectedGenres, setSelectedGenres] = useState<String[]>([])
   const dispatch = useDispatch()
-  const filterOn = useSelector<IRootState, boolean>(state => state.userReducer.filter)
   const {register, handleSubmit, formState: {errors}} = useForm<filterField>({
     resolver: zodResolver(filterSchema)
   })
