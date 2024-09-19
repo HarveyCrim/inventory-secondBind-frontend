@@ -25,12 +25,15 @@ const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: Option[], fi
 
   return (
     <div className={`bg-white p-7 md:sticky fixed top-[50px] md:top-[83px] space-y-4 mt-2 md:w-[700px] h-[100%] w-[100%]`}>
-        <div className="flex justify-between items-center">
-            <Link className="hidden md:inline"to = "/"><div className="hidden md:flex items-center"><IoArrowBackCircle size={35}/><span className="text-lg">Back</span></div></Link>
-            <span className=" py-1 px-2 text-2xl font-medium text-white bg-gray-500">Filters</span>
-            <IoMdCloseCircle onClick = {() => dispatch(setFilter(false))} size = {35} className="md:hidden"/>
+        <div className="hidden md:flex justify-between items-center">
+            <Link className="md:inline"to = "/"><div className="hidden md:flex items-center"><IoArrowBackCircle size={35}/><span className="text-lg">Back</span></div></Link>
+            <span className="md:inline md:py-1 md:px-2 text-2xl font-medium text-white bg-gray-500">Filters</span>
+            
         </div>
-        <form className=" space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <div className="md:hidden w-full flex justify-end">
+            <IoMdCloseCircle onClick = {() => dispatch(setFilter(false))} size = {25} className=""/>
+        </div>
+        <form className="flex flex-col gap-2.5 md:gap-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-1">
                 <label className="font-bold md:text-xl text-md">Title</label>
                 <input {...register("title")} className= "outline-none border border-black p-1" placeholder= "Enter words in title..." type = "text" />
@@ -66,7 +69,7 @@ const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: Option[], fi
                     {errors.isbn && <span className="text-red-500">{errors.isbn.message}</span>}
                 </div>
                 <button className="hidden md:inline rounded-lg border" type = "submit"><div className="flex items-center bg-black text-white md:text-lg text-md py-2 px-7 gap-1 rounded-lg"><IoIosSearch /><span className="font-medium">Search</span></div></button>
-                <button className="md:hidden rounded-lg border" type = "submit"><div className="flex items-center bg-black text-white md:text-lg text-md py-2 px-7 gap-1 rounded-lg"><IoIosSearch /><span className="font-medium">Search</span></div></button>
+                <button className="md:hidden rounded-lg border" type = "submit"><div className="flex items-center justify-center bg-black text-white md:text-lg text-md py-2 px-7 gap-1 rounded-lg"><span className="font-medium">Search</span></div></button>
         </form>
     </div>
   )
