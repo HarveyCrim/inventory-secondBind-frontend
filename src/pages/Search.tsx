@@ -33,6 +33,7 @@ if(gettingGenres){
   )
 }
   return (
+    //two different layouts for mobiie and pc users
     <>
     <div className='hidden min-h-[100vh] md:flex flex-col'>
       <Navbar />

@@ -16,8 +16,6 @@ const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: Option[], fi
   const {register, handleSubmit, formState: {errors}} = useForm<filterField>({
     resolver: zodResolver(filterSchema)
   })
-  console.log(loadedGenres)
-  console.log(selectedGenres, "ggg")
   const onSubmit:SubmitHandler<filterField> = (data: filterField) => {
     let genreValues: String[] = []
     selectedGenres.forEach(item => genreValues.push(item.value))

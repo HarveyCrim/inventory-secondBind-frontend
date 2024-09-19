@@ -2,6 +2,9 @@ import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 const backend_url = import.meta.env.VITE_BACKEND_URL
 
+
+//user api
+
 export const getUserFromDb = () => {
     const {data: userData, isPending : findingUser, mutateAsync : findUser} = useMutation({
         mutationFn : async ({email, name} : {email : String, name : String}) => {

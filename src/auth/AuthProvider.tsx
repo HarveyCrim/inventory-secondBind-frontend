@@ -1,3 +1,5 @@
+//auth0 settings
+
 import { Auth0Provider, User} from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 const AuthProvider = ({children} : {children : React.ReactNode}) => {

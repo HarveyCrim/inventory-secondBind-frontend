@@ -7,6 +7,7 @@ import Search from './pages/Search'
 
 function App() {
 
+  //react-router-dom package to handle all routing
   return (
     <BrowserRouter>
        <AuthProvider>

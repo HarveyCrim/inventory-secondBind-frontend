@@ -1,4 +1,7 @@
 import zod from "zod"
+
+//contains all input validation schemas
+
 export const addEntrySchema = zod.object({
     title : zod.string().min(1),
     genre : zod.string().min(1),
