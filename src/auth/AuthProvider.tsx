@@ -1,4 +1,4 @@
-import { AppState, Auth0Provider, User} from '@auth0/auth0-react';
+import { Auth0Provider, User} from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 const AuthProvider = ({children} : {children : React.ReactNode}) => {
   const navigate = useNavigate()
