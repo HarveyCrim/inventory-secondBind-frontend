@@ -48,12 +48,12 @@ const FilterComponent = ({filterFunc, loadedGenres}: {loadedGenres: string[], fi
             </div>
             <div className="flex md:flex-row flex-col md:gap-7 gap-3">
                 <div className="flex flex-col gap-1 w-[100%]">
-                    <label className="font-bold md:text-xl text-md">Published After</label>
+                    <label className="font-bold md:text-xl text-md">Earliest published Date</label>
                     <input {...register("published_after")} className= "outline-none border border-black p-1" placeholder= "YYYY-MM-DD" type = "text" />
                     {errors.published_after && <span className="text-red-500">{errors.published_after.message}</span>}
                 </div>
                 <div className="flex flex-col gap-1 w-[100%]">
-                    <label className="font-bold md:text-xl text-md">Published Before</label>
+                    <label className="font-bold md:text-xl text-md">Latest published date</label>
                     <input {...register("published_before")} className= "outline-none border border-black p-1" placeholder= "YYYY-MM-DD" type = "text" />
                     {errors.published_before && <span className="text-red-500">{errors.published_before.message}</span>}
                 </div>
