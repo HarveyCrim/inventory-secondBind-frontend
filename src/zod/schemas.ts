@@ -1,3 +1,4 @@
+
 import zod from "zod"
 
 //contains all input validation schemas
@@ -18,7 +19,7 @@ export const addEntrySchema = zod.object({
         }
         return val
     }),
-    isbn: zod.string().transform((val, ctx) => {
+    isbn: zod.string().transform(async (val, ctx) => {
         let correct = true
         for(let i = 0; i < val.length; i++){
             if(val.charCodeAt(i) < 48 || val.charCodeAt(i) > 57){
@@ -32,6 +33,8 @@ export const addEntrySchema = zod.object({
             })
             return zod.NEVER
         }
+        
+        
         return val
     })
 })

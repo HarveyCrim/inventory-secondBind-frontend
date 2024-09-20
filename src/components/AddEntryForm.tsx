@@ -4,19 +4,26 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { insertBookApi } from "../api/bookApi"
 import { SpinnerCircular } from 'spinners-react';
 import {toast} from "sonner"
+import { useEffect } from "react";
 const AddEntryForm = () => {
-  const {insertBook, insertingBook} = insertBookApi()
+  const {insertBook, insertingBook, bookInserted} = insertBookApi()
   type entrySchemaType = Zod.infer<typeof addEntrySchema>
   const {register, handleSubmit, formState : {errors}, reset} = useForm<entrySchemaType>({
     resolver : zodResolver(addEntrySchema)
   })
+  useEffect(() => {
+    if(bookInserted && bookInserted.message == "added"){
+      reset()
+      toast.success("Entry Successfully added")
+    }
+  },[bookInserted])
+
   const onSubmit: SubmitHandler<entrySchemaType> = async (data : entrySchemaType) => {
     await insertBook(data)
-    reset()
-    toast.success("Entry Successfully added")
   }
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        {bookInserted && bookInserted.message == "already" && <p className="text-red-500">Duplicate ISBN</p>}
         <div className="flex flex-col">
             <label className="md:text-xl font-medium">Title</label>
             <input className="outline-none w-[300px] md:w-[500px] p-1 md:p-2 border-2" {...register("title")} type = "text" />
