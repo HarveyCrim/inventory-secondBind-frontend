@@ -114,7 +114,7 @@ const SearchWindow = ({query} : {query: (filterField & {genres: String[]})| unde
         </div>
         }
         {filteredBooks?.length == 0 && <div className='flex justify-center items-center h-full'>
-            <p className='font-medium text-lg mt-[50px]'>No results found. Change the filters.</p>
+            <p className='font-medium text-lg mt-[100px]'>No results found. Change the filters.</p>
         </div>
         }
     </div>
