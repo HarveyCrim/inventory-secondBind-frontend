@@ -2,7 +2,6 @@ import { bookField } from "../zod/schemas"
 type inventoryField = Omit<bookField, "date"> & {userId: number, date: Date, entryId: number}
 const InventoryCard = (data : inventoryField) => {
   let {date} = data
-  console.log(date)
   let convToDate = new Date(date)
   let dateString = convToDate.toLocaleDateString("en-US", {day: "numeric", month: "long", year:"numeric"})
   return (
