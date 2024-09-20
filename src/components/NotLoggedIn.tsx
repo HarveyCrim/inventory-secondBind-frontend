@@ -8,7 +8,7 @@ const NotLoggedIn = () => {
           <h1 className="text-5xl md:text-6xl font-medium">Tired of trying to remember all your book details.</h1>
           <h4 className="text-2xl text-gray-600 pb-1 md:pb-0">Leave it all to Inventory System. A simple to use tool.</h4>
           <div>
-            <span className="text-gray-400">Add all you book details here and give your memory a rest. </span>
+            <span className="text-gray-400">Add all your book details here and give your memory a rest. </span>
             <span onClick = {() => loginWithRedirect()} className="text-gray-500 cursor-pointer underline">Sign up.</span>
           </div>
         </div>
